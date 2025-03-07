@@ -2,13 +2,17 @@ package chess.pieces;
 
 import boardgame.Board;
 import boardgame.Position;
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.Color;
 
-public class Paw extends ChessPiece {
+public class Pawn extends ChessPiece {
+	
+	private ChessMatch chessMatch;
 
-	public Paw(Board borard, Color color) {
+	public Pawn(Board borard, Color color, ChessMatch chessMatch) {
 		super(borard, color);
+		this.chessMatch = chessMatch;
 	}
 
 	@Override
@@ -38,6 +42,19 @@ public class Paw extends ChessPiece {
 			if(getBorard().positionExists(p) && isThereOpponentPiece(p)) {
 				mat[p.getRow()][p.getColumn()] = true;
 			}
+			
+			//specialmove en passant white
+			if(position.getRow() == 3) {
+				Position left = new Position(position.getRow(), position.getColumn() - 1);
+				if(getBorard().positionExists(left) && isThereOpponentPiece(left) && getBorard().piece(left) == chessMatch.getEnPassantVunerable()) {
+					mat[left.getRow() - 1][left.getColumn()] = true;
+				}
+				Position right = new Position(position.getRow(), position.getColumn() + 1);
+				if(getBorard().positionExists(right) && isThereOpponentPiece(right) && getBorard().piece(right) == chessMatch.getEnPassantVunerable()) {
+					mat[right.getRow() - 1][right.getColumn()] = true;
+				}
+			}
+			
 		} else {
 			p.setValues(position.getRow()+1, position.getColumn());
 			if(getBorard().positionExists(p) && !getBorard().thereIsAPiece(p)) {
@@ -57,6 +74,18 @@ public class Paw extends ChessPiece {
 			p.setValues(position.getRow()+1, position.getColumn() + 1);
 			if(getBorard().positionExists(p) && isThereOpponentPiece(p)) {
 				mat[p.getRow()][p.getColumn()] = true;
+			}
+			
+			//specialmove en passant black
+			if(position.getRow() == 4) {
+				Position left = new Position(position.getRow(), position.getColumn() - 1);
+				if(getBorard().positionExists(left) && isThereOpponentPiece(left) && getBorard().piece(left) == chessMatch.getEnPassantVunerable()) {
+					mat[left.getRow() + 1][left.getColumn()] = true;
+				}
+				Position right = new Position(position.getRow(), position.getColumn() + 1);
+				if(getBorard().positionExists(right) && isThereOpponentPiece(right) && getBorard().piece(right) == chessMatch.getEnPassantVunerable()) {
+					mat[right.getRow() + 1][right.getColumn()] = true;
+				}
 			}
 		}
 		
