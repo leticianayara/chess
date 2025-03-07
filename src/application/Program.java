@@ -16,9 +16,10 @@ public class Program {
 
 		ChessMatch chessMatch = new ChessMatch();
 		List<ChessPiece> captured = new ArrayList<>();
+		Scanner sc = new Scanner(System.in);
 
 		while (!chessMatch.getCheckMate()) {
-			Scanner sc = new Scanner(System.in);
+			
 			try {
 				UI.clearScreen();
 				UI.printMatch(chessMatch, captured );
@@ -40,14 +41,24 @@ public class Program {
 					captured.add(capturedPiece);
 				}
 				
+				if(chessMatch.getPromoted() != null) {
+					System.out.print("Enter piece for promotion (B/N/R/Q): ");
+					String type = sc.nextLine();
+					chessMatch.replacePromotedPiece(type);
+				}
+				
 			} catch (ChessException e) {
 				System.out.println(e.getMessage());
 			} catch (InputMismatchException e) {
 				System.out.println(e.getMessage());
 			}
 		}
+		
+		sc.close();
+		
 		UI.clearScreen();
 		UI.printMatch(chessMatch, captured);
+		
 
 	}
 
