@@ -1,6 +1,5 @@
 package chess;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class ChessMatch {
 		currentPiayer = Color.WHITE;
 		check = false;
 		checkMate = false;
-		initalSetup();
 	}
 
 	public int getTurn() {
@@ -132,7 +130,7 @@ public class ChessMatch {
 			throw new IllegalStateException("There is no piece to be promoterd");
 		}
 		if(!type.equals("K") && !type.equals("N") && !type.equals("B") && !type.equals("Q")) {
-			throw new InvalidParameterException("Invalid type for promotion");
+			return promoted;
 		}
 		
 		Position pos = promoted.getChessPosition().toPosition();
@@ -273,7 +271,7 @@ public class ChessMatch {
 		piecesOnTheBoard.add(piece);
 	}
 
-	private void initalSetup() {
+	public void initalSetup() {
 		placeNewPiece('a', 1, new Rook(board, Color.WHITE));
 		placeNewPiece('b', 1, new Knight(board, Color.WHITE));
 		placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
